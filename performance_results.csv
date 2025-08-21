@@ -1,0 +1,2 @@
+Run,TotalUsers,TimeTaken(s),Throughput(TPS),AvgLatency(ms),AvgGasUsed
+1,50,1.63,30.75,947.68,151967.32
