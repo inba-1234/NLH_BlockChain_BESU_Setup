@@ -6,6 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import registerservice from "../FireStore/services/registerservice.js";
 
 function Register() {
+  
   const navigate = useNavigate();
   
   // Register form state
