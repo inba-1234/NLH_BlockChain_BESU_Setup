@@ -1,6 +1,4 @@
-
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 //for accessing the firestore database
 import { getFirestore } from "firebase/firestore";
 

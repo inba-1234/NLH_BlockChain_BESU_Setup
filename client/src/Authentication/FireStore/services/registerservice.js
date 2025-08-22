@@ -16,9 +16,9 @@ from 'firebase/firestore'
 const registerCollectionRef = collection(db, "register");
 
  const addUser = async (user) => {
-    const q = query(registerCollectionRef, where("email", "==", user.email),where("univID", "==", user.univID));
+    const q = query(registerCollectionRef, where("regID", "==", user.regID));
     const querySnapshot = await getDocs(q);
-
+  
     if (!querySnapshot.empty) {
         throw new Error("User already exists.");
     } else {
@@ -40,36 +40,54 @@ const registerCollectionRef = collection(db, "register");
  }
 
  
- const getByQuery = async(email,password,role)=>{
-    const  q = query(
-        registerCollectionRef,
-        where("email","==",email),
-        where("role","==",role),
-        where("password","==",password)
-     );
-     const querySnapshot = await getDocs(q);
-     if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        return { id: userDoc.id, ...userDoc.data() };
-      } else {
-        return null;
-      }
- }
+//  const getByQuery = async(email,password,role)=>{
+//     const  q = query(
+//         registerCollectionRef,
+//         where("email","==",email),
+//         where("role","==",role),
+//         where("password","==",password)
+//      );
+//      const querySnapshot = await getDocs(q);
+//      if (!querySnapshot.empty) {
+//         const userDoc = querySnapshot.docs[0];
+//         return { id: userDoc.id, ...userDoc.data() };
+//       } else {
+//         return null;
+//       }
+//  }
  
- const getByEmail = async(email,role)=>{
-    const  q = query(
-        registerCollectionRef,
-        where("email","==",email),
-        where("role","==",role)
-     );
-     const querySnapshot = await getDocs(q);
-     if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        return { id: userDoc.id, ...userDoc.data() };
-      } else {
-        return null;
-      }
- }
+//  const getByEmail = async(email,role)=>{
+//     const  q = query(
+//         registerCollectionRef,
+//         where("email","==",email),
+//         where("role","==",role)
+//      );
+//      const querySnapshot = await getDocs(q);
+//      if (!querySnapshot.empty) {
+//         const userDoc = querySnapshot.docs[0];
+//         return { id: userDoc.id, ...userDoc.data() };
+//       } else {
+//         return null;
+//       }
+//  }
+
+const loginUser = async (regID, password, role) => {
+  const q = query(
+    registerCollectionRef,
+    where("regID", "==", regID),
+    where("password", "==", password),
+    where("role", "==", role)
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const userDoc = querySnapshot.docs[0];
+    return { id: userDoc.id, ...userDoc.data() };
+  } else {
+    throw new Error("Invalid credentials");
+  }
+};
  const updateUser = async (id,updateduser) => {
     // (database instance, collection name, document id)
      const userDoc = doc(db, "register", id);//check doc present in collection
@@ -95,7 +113,6 @@ export default {
   getUser,
   updateUser,
   deleteUser,
-  getByQuery,
-  getByEmail,
-  updateGenerateField
+  updateGenerateField,
+  loginUser
 };
